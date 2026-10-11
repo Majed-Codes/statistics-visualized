@@ -1,0 +1,13 @@
+# Netlify: static site. The build also copies the Python runtime into the
+# site (npm run vendor:python, ~48 MB) so the Python Lab works offline.
+[build]
+  command = "npm ci && npm run vendor:python && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[headers]]
+  for = "/pyodide/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

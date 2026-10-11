@@ -1,0 +1,15 @@
+import { chromium } from '@playwright/test';
+const out = process.argv[2];
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+await page.goto('http://localhost:5174/#/slide/14');
+await page.waitForSelector('[data-slide="14"]');
+await page.waitForTimeout(800);
+await page.getByTestId('btn-next').click();
+await page.waitForTimeout(260);
+await page.screenshot({ path: `${out}/mid-iris.png` });
+await page.waitForTimeout(900);
+await page.screenshot({ path: `${out}/after-iris.png` });
+const wipeHidden = await page.evaluate(() => [...document.querySelectorAll('[aria-hidden="true"].fixed.inset-0')].every((e) => getComputedStyle(e).display === 'none'));
+console.log('overlay removed after transition:', wipeHidden);
+await browser.close();

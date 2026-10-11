@@ -1,0 +1,10 @@
+import { webkit, devices } from '@playwright/test';
+const b = await webkit.launch();
+const p = await b.newPage({ ...devices['iPhone 14'] });
+await p.goto('http://localhost:5174/#/slide/18');
+await p.waitForSelector('[data-slide="18"]');
+await p.getByTestId('btn-reveal').click();
+const boxes = await p.evaluate(() => ['btn-reveal', 'btn-reset', 'timer', 'btn-prev', 'btn-next'].map((id) => { const r = document.querySelector(`[data-testid=${id}]`).getBoundingClientRect(); return `${id}: ${Math.round(r.left)}–${Math.round(r.right)}`; }));
+console.log(boxes.join('\n'), '\nvw', await p.evaluate(() => innerWidth));
+await p.screenshot({ path: process.argv[2] });
+await b.close();

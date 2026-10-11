@@ -1,0 +1,9 @@
+test-results/
+playwright-report/
+node_modules/
+dist/
+.DS_Store
+# optional offline Python runtime (npm run vendor:python)
+public/pyodide/
+# course material: kept local, not published
+docs/source-Unit2_Part5.pdf

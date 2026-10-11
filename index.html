@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#2B3FD6" />
+    <meta name="description" content="Statistics Visualized: an interactive 53-slide lecture on statistics foundations for machine learning (Tuwaiq Academy, Unit 2 Part 5)." />
+    <title>Statistics Visualized</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232B3FD6'/%3E%3Cpath d='M4 26 Q10 26 13 16 T22 6 T28 6' stroke='%23F4F6FF' stroke-width='3' fill='none'/%3E%3Ccircle cx='16' cy='12' r='3' fill='%23D4F23A'/%3E%3C/svg%3E" />
+    <style>
+      /* Minimal inline styles so the boot message is readable before CSS loads. */
+      html, body { background: #2B3FD6; color: #F4F6FF; margin: 0; }
+      #boot { font: 16px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; max-width: 640px; margin: 10vh auto; }
+      #boot b { color: #D4F23A; }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Replaced as soon as React mounts. If this stays visible, JavaScript failed to start. -->
+      <div id="boot">
+        <p><b>Statistics Visualized</b> is loading…</p>
+        <p id="boot-slow" style="display:none;color:#C6CDFF">
+          The lecture has not started after several seconds. Your browser may be blocking JavaScript
+          or may be too old (Safari 15.4+, Chrome 100+, Firefox 100+ are supported). Try reloading the page.
+        </p>
+      </div>
+    </div>
+    <noscript><p style="padding:24px">This interactive lecture needs JavaScript enabled.</p></noscript>
+    <script>
+      setTimeout(function () { var s = document.getElementById('boot-slow'); if (s) s.style.display = 'block'; }, 6000);
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
