@@ -3,6 +3,9 @@
 @import '@fontsource-variable/bricolage-grotesque/opsz.css';
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ibm-plex-sans-arabic/400.css';
+@import '@fontsource/ibm-plex-sans-arabic/500.css';
+@import '@fontsource/ibm-plex-sans-arabic/700.css';
 
 /*
  * Visual language: bold colour fields per section, ink borders, key-cap
@@ -36,7 +39,7 @@
   --color-versicolor: #c2701a;
   --color-virginica: #16807d;
 
-  --font-sans: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Noto Sans Arabic', sans-serif;
+  --font-sans: 'Bricolage Grotesque Variable', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
@@ -337,4 +340,17 @@ svg text {
   .no-print {
     display: none !important;
   }
+}
+
+/* Arabic text: Bricolage has no Arabic glyphs, so Arabic runs in IBM Plex Sans Arabic
+   with a slightly larger size and looser line height for legibility. */
+[lang='ar'] {
+  font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+  line-height: 1.75;
+}
+[lang='ar'] .lab {
+  font-family: 'IBM Plex Sans Arabic', var(--font-mono);
+  letter-spacing: 0;
+  font-size: 13px;
+  font-weight: 700;
 }

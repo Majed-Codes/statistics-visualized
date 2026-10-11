@@ -14,7 +14,8 @@ import { SlideFrame } from './SlideFrame';
 import { Progress } from './Progress';
 import { Overview } from './Overview';
 import { HelpOverlay } from './HelpOverlay';
-import { NotesBody } from './NotesPanel';
+import { LangSwitch, NotesBody } from './NotesPanel';
+import { useNotesLang } from '../../hooks/useNotesLang';
 import { ThemeScope } from './ThemeScope';
 import { Button } from '../ui/Button';
 import { IconClose, IconCode, IconExpand, IconGrid, IconHelp, IconMenu, IconNotes, IconPause, IconPlay, IconReset, IconScatter, IconWindow } from '../ui/Icons';
@@ -67,6 +68,7 @@ export function Deck({ n }: { n: number }) {
   const laserRef = useRef<HTMLDivElement>(null);
   const timer = useSessionTimer();
   const fs = useFullscreen();
+  const [notesLang, setNotesLang] = useNotesLang();
   const themeId = themeForSlide(n);
   const prevTheme = useRef(themeId);
   const prevN = useRef(n);
@@ -323,11 +325,16 @@ export function Deck({ n }: { n: number }) {
                   data-testid="notes-drawer"
                   aria-label="Presenter notes"
                 >
-                  <div className="mb-2 flex items-center justify-between gap-2">
-                    <span className="rounded-md bg-ac px-2 py-0.5 font-mono text-[0.7em] font-medium uppercase tracking-wide text-onac">Notes visible on this screen</span>
-                    <Button size="sm" variant="ghost" onClick={() => setNotes(false)} icon={<IconClose />} aria-label="Hide notes" />
+                  <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                    <span className="rounded-md bg-ac px-2 py-0.5 text-[0.75em] font-bold text-onac" lang={notesLang} data-testid="notes-warning">
+                      {notesLang === 'ar' ? 'الملاحظات ظاهرة على هذه الشاشة' : 'Notes visible on this screen'}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <LangSwitch lang={notesLang} onChange={setNotesLang} />
+                      <Button size="sm" variant="ghost" onClick={() => setNotes(false)} icon={<IconClose />} aria-label="Hide notes" />
+                    </div>
                   </div>
-                  <NotesBody meta={meta} />
+                  <NotesBody meta={meta} lang={notesLang} />
                 </aside>
               )}
             </div>

@@ -3,6 +3,7 @@ import pages from './pdf-pages.json';
 import { PLANNED_MINUTES, SECTIONS, SLIDES, TOTAL_SLIDES, plannedStartMinute } from '../../src/data/lecture-content';
 import { SLIDE_REGISTRY } from '../../src/slides';
 import { LAB, ORIGINAL, CORRECTED } from '../../src/data/notebook';
+import { NOTES_AR } from '../../src/data/notes-ar';
 
 const norm = (s: string) => s.replace(/ـ/g, '').replace(/\s+/g, ' ').trim();
 
@@ -41,6 +42,20 @@ describe('lecture structure', () => {
       expect(n.minutes).toBeGreaterThan(0);
       expect(s.visual.length).toBeGreaterThan(10);
     }
+  });
+
+  it('every slide has complete Arabic presenter notes', () => {
+    const arabic = /[\u0600-\u06FF]/;
+    for (const s of SLIDES) {
+      const a = NOTES_AR[s.n];
+      expect(a, `Arabic notes for slide ${s.n}`).toBeTruthy();
+      for (const f of [a.objective, a.visual, a.misconception, a.question, ...a.say]) {
+        expect(f.length, `slide ${s.n}`).toBeGreaterThan(2);
+        expect(arabic.test(f), `slide ${s.n} is Arabic: ${f.slice(0, 30)}`).toBe(true);
+      }
+      expect(a.say.length, `slide ${s.n} say lines`).toBe(s.notes.say.length);
+    }
+    expect(Object.keys(NOTES_AR)).toHaveLength(53);
   });
 
   it('planned speaking time adds up to the 90-minute session', () => {

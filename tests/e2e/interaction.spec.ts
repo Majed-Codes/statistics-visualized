@@ -162,7 +162,11 @@ test.describe('presenter', () => {
     await page.getByTestId('btn-menu').click();
     await page.getByTestId('btn-notes').click();
     await expect(page.getByTestId('notes-drawer')).toBeVisible();
-    await expect(page.getByTestId('notes-drawer')).toContainText('Notes visible on this screen');
+    await expect(page.getByTestId('notes-warning')).toHaveText('الملاحظات ظاهرة على هذه الشاشة');
+    await expect(page.getByTestId('notes-body')).toHaveAttribute('dir', 'rtl');
+    await page.getByTestId('notes-lang').getByRole('radio', { name: 'EN' }).click();
+    await expect(page.getByTestId('notes-warning')).toHaveText('Notes visible on this screen');
+    await expect(page.getByTestId('notes-body')).toHaveAttribute('dir', 'ltr');
     expect(info.project.name).toBeTruthy();
   });
 
@@ -173,9 +177,15 @@ test.describe('presenter', () => {
     const presenter = await context.newPage();
     await presenter.goto('./#/presenter');
     await expect(presenter.getByTestId('presenter-view')).toBeVisible();
-    await expect(presenter.getByTestId('presenter-view')).toContainText('slide 20 / 53');
+    // Arabic by default, right to left
+    await expect(presenter.getByTestId('presenter-view')).toHaveAttribute('dir', 'rtl');
+    await expect(presenter.getByTestId('presenter-position')).toContainText('الشريحة 20 من 53');
+    await expect(presenter.getByTestId('notes-body')).toContainText('الوسط ينجذب نحو القيمة الشاذة');
+    // English on request
+    await presenter.getByTestId('notes-lang').getByRole('radio', { name: 'EN' }).click();
+    await expect(presenter.getByTestId('presenter-position')).toContainText('slide 20 / 53');
     await expect(presenter.getByTestId('notes-body')).toContainText('The mean is pulled towards an outlier');
-    await presenter.getByRole('button', { name: 'Next' }).click();
+    await presenter.getByTestId('presenter-next').click();
     await expect(page.getByTestId('btn-reveal')).toContainText('1/4');
     await presenter.locator('select').selectOption('24');
     await expect(page.locator('[data-slide="24"]')).toBeVisible();

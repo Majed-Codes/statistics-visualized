@@ -1,0 +1,13 @@
+import { chromium } from '@playwright/test';
+const out = process.argv[2];
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 1280, height: 860 } });
+const deck = await ctx.newPage();
+await deck.goto('http://localhost:5174/#/slide/20');
+await deck.waitForSelector('[data-slide="20"]');
+const p = await ctx.newPage();
+await p.goto('http://localhost:5174/#/presenter');
+await p.getByTestId('presenter-view').waitFor();
+await p.waitForTimeout(600);
+await p.screenshot({ path: `${out}/presenter-ar.png` });
+await b.close();
